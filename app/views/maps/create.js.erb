@@ -1,0 +1,6 @@
+<% if @status == 'success' %>
+$("tbody").append("<%= j(render("tr", map: @map)) %>");
+<% elsif @status == 'fail' %>
+alert('error!');
+<% end %>
+$("#map-modal").modal("hide”);

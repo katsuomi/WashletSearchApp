@@ -1,0 +1,16 @@
+<div class="container">
+  <a href="/">トップ</a><i class="fas fa-caret-right f20 ml-1 mr-1"></i>地点登録</a>
+</div>
+<div class="container mt-3">
+  <%= form_for @map do |f| %>
+    
+    <div class="form-group bold font-japanese">
+      <%= f.label :address ,"名称・住所" %>
+      <span id="add"><%= f.text_field :address ,class: "form-control",placeholder: "東京タワー,東京都港区芝公園４丁目２−８" %></span>
+    </div>
+  
+    <div class="actions center">
+      <span><%= f.submit "地点登録",class: "btn btn-primary2 bold" %></span>
+    </div>
+  <% end %>
+</div>

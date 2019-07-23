@@ -1,0 +1,439 @@
+<script>
+    // 現在地取得処理
+        function initMap() {
+          // Geolocation APIに対応している
+          if (navigator.geolocation) {
+            // 現在地を取得
+            navigator.geolocation.getCurrentPosition(
+              // 取得成功した場合
+              function(position){
+                // 緯度・経度を変数に格納
+                var mapLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                // マップオプションを変数に格納
+                var mapOptions = {
+                  zoom : 17,          // 拡大倍率
+                  center : mapLatLng  // 緯度・経度
+                };
+                // マップオブジェクト作成
+                var map = new google.maps.Map(
+                  document.getElementById("map-canvas"), // マップを表示する要素
+                  mapOptions         // マップオプション
+                );
+                var contentString = '現在地';
+                var infowindow = new google.maps.InfoWindow({
+                  content: contentString
+                });
+                var marker = new google.maps.Marker({
+                  map : map,             // 対象の地図オブジェクト
+                  position : mapLatLng,   // 緯度・経度
+                  title: contentString,
+                  animation: google.maps.Animation.DROP,
+                });
+                marker.addListener('click', function(){
+                  infowindow.open(map, marker);
+                });
+
+                google.maps.event.addListener(map, 'click', clickEventFunc);
+                function clickEventFunc(event){
+                  (function(){
+                      var contentString = '<%= link_to "ココを登録する", "#my-modal", "data-toggle" => "modal" %>';
+                      var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+
+                    var rere = event.latLng.toString()
+                    var rere2 = rere.substring(0, rere.length-1);
+                    var rere3 = rere2.substring(1);
+                    var rere4 = rere3.split(",");
+                    var rere5 = rere4[0];
+                    var rere6 = rere4[1];
+                    $("#raty").val(rere5)
+                    $("#raty2").val(rere6)
+
+                    var hidden_latlng = event.latLng.toString();
+
+                    var marker = new google.maps.Marker({
+                      position: event.latLng,
+                      map: map,
+                      title: "contentString",
+                      animation: google.maps.Animation.DROP,
+                      icon: "/images/plus.png",
+                    });
+
+                    marker.addListener('click', function() {
+                      infowindow.open(map, marker);
+                    });
+                  })();
+                }
+                
+                <% @maps.each do |map| %>
+                  (function(){
+                    var contentString = '<%= link_to "ココへ行く", map_path(map),class: "f20 bold" %>' +'<br/>' + '<a data-method="delete" data-confirm="本当にここを削除しますか？" rel="nofollow" href="/maps/<%= map.id %>">ココを削除</a>'  ;
+                    var infowindow = new google.maps.InfoWindow({
+                      content: contentString
+                    });
+              
+                    var marker = new google.maps.Marker({
+                      position:{lat: <%= map.latitude %>, lng: <%= map.longitude %>},
+                      map: map,
+                      title: contentString,
+                      animation: google.maps.Animation.DROP,
+                      icon: "/images/restroom_1.png",
+                    });
+              
+                    marker.addListener('click', function() {
+                      infowindow.open(map, marker);
+                    });
+                  })();
+                <% end %>
+
+              },
+              // 取得失敗した場合
+              function(error) {
+                // エラーメッセージを表示
+                switch(error.code) {
+                  case 1: // PERMISSION_DENIED
+                    alert("位置情報の利用が許可されていません");
+                    break;
+                  case 2: // POSITION_UNAVAILABLE
+                    alert("現在位置が取得できませんでした");
+                    break;
+                  case 3: // TIMEOUT
+                    alert("タイムアウトになりました");
+                    break;
+                  default:
+                    alert("その他のエラー(エラーコード:"+error.code+")");
+                    break;
+                }
+              }
+            );
+          // Geolocation APIに対応していない
+          } else {
+            alert("この端末では位置情報が取得できません");
+          }
+        }
+    </script>
+
+<p id="notice"><%= notice %></p>
+<!-- 地図を表示させる要素 -->
+<div class="f20">
+  ウォシュレット検索
+</div>
+<br/>
+<form onsubmit="return false;" method="get" class="form-group">
+  <input type="text" value="" id="address" placeholder="住所・建物名で検索できます" size="70" class="form">
+  <input type="submit" value="検索" id="map_button" class="btn btn-primary1 btn-sm" />
+</form>
+
+<div class="modal fade" id="my-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <%= form_for @map do |f| %>
+            <div class="form-group bold font-japanese">
+              <%= f.label :address ,"名称・住所" %>
+              <span id="add"><%= f.text_field :address ,class: "form-control",placeholder: "東京タワー,東京都港区芝公園４丁目２−８" %></span>
+            </div>
+
+            <%= f.hidden_field :latitude, id: :raty %>
+            <%= f.hidden_field :longitude, id: :raty2 %>
+                  
+            <div class="actions center">
+              <span><%= f.submit "地点登録",class: "btn btn-primary2 bold" %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<br>
+<div>
+  <div id="map-canvas" style="width: 100vw; height: auto; min-height: 100vh;"></div>
+</div>
+<br>
+<h1 class="font-japanese f20">近くのウォシュレット</h1>
+<div>
+  <div>
+    <table>
+          <thead>
+          </thead>
+          <tbody id="data-list"></tbody>
+      </table>
+  </div>
+</div>
+
+<br>
+<%= link_to "登録データのCSV出力はこちら", maps_path(format: :csv) %>
+<br>
+<!-- APIを取得 -->
+<script type="text/javascript" src="//maps.google.com/maps/api/js?key=AIzaSyDbiCLU7eNpIAqhi0gP1whLfkDNLu97ESA&callback=initMap"></script>
+
+
+<script>
+  var getMap = (function() {
+    function codeAddress(address) {
+      // google.maps.Geocoder()コンストラクタのインスタンスを生成
+      var geocoder = new google.maps.Geocoder();
+  
+      // 地図表示に関するオプション
+      var mapOptions = {
+        zoom: 17,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+  
+      // 地図を表示させるインスタンスを生成
+      var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+      
+      //マーカー変数用意
+      var marker;
+      
+      // geocoder.geocode()メソッドを実行 
+      geocoder.geocode( { 'address': address}, function(results, status) {
+        
+        // ジオコーディングが成功した場合
+        if (status == google.maps.GeocoderStatus.OK) {
+          
+          // 変換した緯度・経度情報を地図の中心に表示
+          map.setCenter(results[0].geometry.location);
+          
+          //☆表示している地図上の緯度経度
+          document.getElementById('lat').value=results[0].geometry.location.lat();
+          document.getElementById('lng').value=results[0].geometry.location.lng();
+                
+        // ジオコーディングが成功しなかった場合
+        } else {
+          console.log('Geocode was not successful for the following reason: ' + status);
+        }
+      
+      });
+
+      <% @maps.each do |map| %>
+        (function(){
+          var contentString = "<%= map.address %>" + '<%= link_to "ココへ行く", map_path(map) %>';
+          var infowindow = new google.maps.InfoWindow({
+              content: contentString
+          });
+    
+          var marker = new google.maps.Marker({
+              position:{lat: <%= map.latitude %>, lng: <%= map.longitude %>},
+              map: map,
+              title: contentString,
+              animation: google.maps.Animation.DROP,
+              icon: "/images/restroom_1.png"
+          });
+    
+          marker.addListener('click', function() {
+            infowindow.open(map, marker);
+          });
+        })();
+      <% end %>
+
+    
+      function getClickLatLng(lat_lng, map) {
+        
+        //☆表示している地図上の緯度経度
+        document.getElementById('lat').value=lat_lng.lat();
+        document.getElementById('lng').value=lat_lng.lng();
+                
+        // 座標の中心をずらす
+        map.panTo(lat_lng);
+      }
+    
+    }
+    
+    //inputのvalueで検索して地図を表示
+    return {
+      getAddress: function() {
+        // ボタンに指定したid要素を取得
+        var button = document.getElementById("map_button");
+        
+        // ボタンが押された時の処理
+        button.onclick = function() {
+          // フォームに入力された住所情報を取得
+          var address = document.getElementById("address").value;
+          // 取得した住所を引数に指定してcodeAddress()関数を実行
+          if(address == ""){
+            initMap()
+          }else{
+            codeAddress(address);
+          }
+        }
+      }
+    };
+  })();
+  getMap.getAddress();
+</script>
+ 
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+ 
+ 
+<script>
+ ;(function($, window, undefined){
+ 
+ 
+     // データリスト、東京都のラーメン＆つけ麺
+     // 緯度経度取得後に、各データ毎にlat(緯度),lng(経度)が入ります。
+ 
+     var array = gon.users;
+     var dataList = []
+     for (  var i = 0;  i < array.length;  i++  ) {
+      dataList.push({'name':array[i].address,'address':array[i].address,'latitude':array[i].latitude,'longitude':array[i].longitude});
+     }
+       
+          // データリストの緯度経度を取得
+    // データリストの緯度経度を取得
+    function dfdGeocode(){
+        var i;
+        var data;    
+        for (  var i = 0;  i < dataList.length;  i++  ) {
+            data = dataList[i];
+            data.lat = dataList[i].latitude; //緯度
+            data.lng = dataList[i].longitude; //経度
+        }
+    }
+
+
+
+     // 現在位置の取得
+     function dfdCurrentPosition(){
+         var dfd = $.Deferred();
+ 
+         // Geolocationが使用可能かチェック
+         if( !window.navigator.geolocation ) dfd.reject();
+ 
+         // 現在地の取得
+         window.navigator.geolocation.getCurrentPosition(
+             // Success
+             function(position){
+                 dfd.resolve(position);
+             },
+             // Error
+             function(error){
+                 dfd.reject();
+             },
+             // Options
+             {
+                 enableHighAccuracy:true, //位置情報の精度を高く
+                 timeout: 10000, //10秒でタイムアウト
+                 maximumAge: 600000 //10分間有効
+             }
+         );
+ 
+         return dfd.promise();
+     }
+ 
+ 
+     // DOM Content Loaded
+     function dfdDocumentReady(){
+         var dfd = $.Deferred();
+         $(function(){
+             dfd.resolve($(document));
+         });
+         return dfd.promise();
+     }
+
+     // データが揃った段階でソートを開始
+     $.when(
+         dfdCurrentPosition(),
+         dfdGeocode(),
+         dfdDocumentReady()
+     )
+     .done(function(position){
+ 
+         // 現在地
+         var coords = position.coords;
+ 
+         // 距離の割り出しを行ない、各データにdistance属性を設定
+         $.each(dataList, function(i, data){
+             data.distance = getDistance(data.lat, data.lng, coords.latitude, coords.longitude, 0) / 1000; //kmで算出
+         });
+ 
+         // 現在地からの距離が小さい順にソート
+         dataList.sort(function(a, b){
+             return (a.distance < b.distance) ? -1 : 1;
+         });
+ 
+         // データを出力
+         var html =  "";
+ 
+        $.each(dataList, function(i, data){
+          if(i < 5){
+            var newLine = array.filter(function(item, index){
+              if (item.address === dataList[i].name){
+                var id = item.id
+                html += '<div class="dropdown justify">';
+                html += '<span>'+(i+1)+'</span>';
+                html += '<a class="dropdown-toggle ml-3" data-toggle="dropdown">'
+                html += '<span class="pointer blue">'
+                html += data.name;
+                html += '</span>';
+                html += '</a>';
+                html += '<div class="dropdown-menu">'
+                html += '<a href="/maps/'+ id + '">'
+                html += 'ココへ行く</a>'
+                html += '<br/>'
+                html += '<a data-method="delete" data-confirm="本当にここを削除しますか？" rel="nofollow" href="/maps/' + id + '">ココを削除</a>'
+                html += '</div>'
+                html += '<span class="ml-3" >'+data.distance+'km</span>';
+                html += '</div>'
+              };
+            });
+          }
+        });
+         $("#data-list").append(html);
+     })
+     .fail(function(){
+         alert("お使いの端末の位置情報サービスが無効になっているか対応していないため、エラーが発生しました");
+         console.log("error", arguments);
+     });
+ 
+ 
+     /**
+      * 2点間の緯度経度から距離を取得
+      * 測地線航海算法を使用して距離を算出する。
+      * @see http://hamasyou.com/blog/2010/09/07/post-2/
+      * @param float 緯度1
+      * @param float 経度2
+      * @param float 緯度2
+      * @param float 経度2
+      * @param 小数点以下の桁数(べき乗で算出精度を指定)
+      */
+     function getDistance(lat1, lng1, lat2, lng2, precision){
+       var distance = 0;
+       if( ( Math.abs(lat1 - lat2) < 0.00001 ) && ( Math.abs(lng1 - lng2) < 0.00001 ) ) {
+         distance = 0;
+       }else{
+         lat1 = lat1 * Math.PI / 180;
+         lng1 = lng1 * Math.PI / 180;
+         lat2 = lat2 * Math.PI / 180;
+         lng2 = lng2 * Math.PI / 180;
+ 
+         var A = 6378140;
+         var B = 6356755;
+         var F = ( A - B ) / A;
+ 
+         var P1 = Math.atan( ( B / A ) * Math.tan(lat1) );
+         var P2 = Math.atan( ( B / A ) * Math.tan(lat2) );
+ 
+         var X = Math.acos( Math.sin(P1) * Math.sin(P2) + Math.cos(P1) * Math.cos(P2) * Math.cos(lng1 - lng2) );
+         var L = ( F / 8 ) * ( ( Math.sin(X) - X ) * Math.pow( (Math.sin(P1) + Math.sin(P2) ), 2) / Math.pow( Math.cos(X / 2), 2 ) - ( Math.sin(X) - X ) * Math.pow( Math.sin(P1) - Math.sin(P2), 2 ) / Math.pow( Math.sin(X), 2) );
+ 
+         distance = A * ( X + L );
+         var decimal_no = Math.pow(10, precision);
+         distance = Math.round(decimal_no * distance / 1) / decimal_no;
+       }
+       return distance;
+     }
+ 
+ 
+ }(jQuery, window));
+ 
+</script>

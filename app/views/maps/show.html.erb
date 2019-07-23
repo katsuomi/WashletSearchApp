@@ -1,0 +1,118 @@
+<script type="text/javascript" src="//maps.google.com/maps/api/js?key=AIzaSyDbiCLU7eNpIAqhi0gP1whLfkDNLu97ESA&callback=initMap"></script>
+<!-- 地図を表示させる要素 -->
+<div class="container">
+  <a href="/">トップ</a><i class="fas fa-caret-right f20 ml-1 mr-1"></i>詳細</a>
+</div>
+<div id="directionsPanel"></div>
+
+<div id="map" style="width: 100vw; height: auto; min-height: 100vh;" onLoad="location.reload();"></div>
+
+<script>  
+  let targetLatLng = [<%= @map.latitude %>, <%= @map.longitude %>]; // LIG
+  let goalMarkerImg = "/images/restroom_1.png";
+  let map;
+
+  function initMap() {
+    navigator.geolocation.getCurrentPosition(
+      // 取得成功した場合
+      function(position){
+        // 緯度・経度を変数に格納
+        let startLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude); 
+
+        let options = {
+          zoom: 17,
+          center : startLatLng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        map = new google.maps.Map(document.getElementById('map'), options);
+        let rendererOptions = {
+          map: map, // 描画先の地図
+          draggable: true, // ドラッグ可
+          preserveViewport: true // centerの座標、ズームレベルで表示
+        };
+        var contentString = '現在地';
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        var marker = new google.maps.Marker({
+          map : map,             // 対象の地図オブジェクト
+          position : startLatLng ,   // 緯度・経度
+          title: contentString,
+          animation: google.maps.Animation.DROP,
+        })
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+        
+        $('#directionsPanel').text('');
+        let directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+        let directionsService = new google.maps.DirectionsService();
+        directionsDisplay.setMap(map);
+        directionsDisplay.setPanel(document.getElementById('directionsPanel'));     // 経路詳細
+
+        let request = {
+          origin: new google.maps.LatLng(position.coords.latitude, position.coords.longitude), // スタート地点
+          destination: new google.maps.LatLng(targetLatLng[0], targetLatLng[1]), // ゴール地点
+          travelMode: google.maps.DirectionsTravelMode.DRIVING, // 移動手段
+        };
+        directionsService.route(request, function(response,status) {
+          if (status === google.maps.DirectionsStatus.OK) {
+            new google.maps.DirectionsRenderer({
+              map: map,
+              directions: response,
+              suppressMarkers: true // デフォルトのマーカーを削除
+            });
+            let leg = response.routes[0].legs[0];
+            makeMarker(leg.end_location, markers.goalMarker, map);
+            setTimeout(function() {
+              map.setZoom(16); // ルート表示後にズーム率を変更
+            });
+          }
+        });
+
+      }
+    )
+  }
+  function makeMarker(position, icon, map) {
+    var contentString = '<%= @map.address %>';
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    let marker = new google.maps.Marker({
+      position: position,
+      title: contentString,
+      map: map,
+      icon: "/images/restroom_1.png"
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+  
+  let markers = {
+    goalMarker: new google.maps.MarkerImage(
+      goalMarkerImg, // 画像のパス
+      new google.maps.Size(200, 200), // マーカーのwidth,height
+      new google.maps.Point(0, 0), // 画像データの中で、どの部分を起点として表示させるか
+      new google.maps.Point(12, 33), // マーカーのpositionで与えられる緯度経度を画像のどの点にするか
+      new google.maps.Size(40, 40)) // 画像の大きさを拡大縮小
+  };
+  
+  initMap()
+  
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script language="JavaScript">
+$(document).ready( function(){
+if (window.name != "test") {
+location.reload();
+window.name = "test";
+} else {
+window.name = "";
+}
+});
+</script>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" user-scalable=yes >
+    <meta name="keywords" content="ウォシュレット検索,ウォシュレット,トイレ,トイレ検索" />
+    <meta name="description" content="あなたを現在地から最も近いウォシュレットのある場所まで導きます。簡単に誰でもウォシュレットの登録・削除ができます。" />
+    <meta property="og:title" content="ウォシュレット検索" />
+    <meta property="og:image" content="https://www.washlet-search.com/public/images/restroom_1.png" />
+    <meta property="twitter:image" content="https://www.washlet-search.com/public/images/restroom_1.png" />
+    <meta property="og:title" content="ウォシュレット検索" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.washlet-search.com/" />
+    <meta property="og:site_name" content="https://www.washlet-search.com/" />
+    <meta property="og:description" content="トイレがしたい。だが、ウォシュレットが無いとできない。そんなあなたの悩みを解決するサービス「ウォシュレット検索」" />
+
+    <meta name="twitter:card" content="summary">
+    <title>washlet検索</title>
+    <%= csrf_meta_tags %>
+
+    <%= include_gon %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-5217006848369838",
+        enable_page_level_ads: true
+      });
+    </script>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>

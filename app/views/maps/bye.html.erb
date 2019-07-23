@@ -1,0 +1,27 @@
+<div class="container">
+    <a href="/">トップ</a><i class="fas fa-caret-right f20 ml-1 mr-1"></i>削除</a>
+</div>
+
+<h1 class="font-japanese f20">ウォシュレットのある場所</h1>
+<p class="center">現在の登録数:<span class="font-english ml-1 f40"><%= @maps.count %></span></p>
+<div class="container">
+  <table class="font-japanese">
+    <thead>
+      <tr>
+        <th>名称・住所</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @maps.each do |map| %>
+        <tr style="border-bottom:1px solid black;">
+          <td><%= map.address %></td>
+          <td><%= link_to 'ココへ行く', map %></td>
+          <!-- <td><%= link_to 'Edit', edit_map_path(map) %></td> -->
+          <td><%= link_to '削除', map, method: :delete, data: { confirm: '本当に削除しますか?' },class: "btn btn-danger btn-sm" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

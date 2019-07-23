@@ -1,0 +1,117 @@
+@import "bootstrap";
+@import url('https://fonts.googleapis.com/css?family=Luckiest+Guy');
+@import url('https://fonts.googleapis.com/css?family=Kosugi+Maru');
+
+
+.font-japanese{
+  font-family: 'Kosugi Maru', sans-serif;
+}
+
+
+#map {
+  height: 400px;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:left;
+  width: 80%
+}
+
+
+#map {
+  height: 400px;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:left;
+  width: 80%
+}
+
+#data-list td{
+  border-bottom:1px solid black;
+  padding:10px;
+}
+
+.top{
+  position: relative;
+}
+
+.top-left{
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.center{
+  text-align:center;
+}
+
+.form{
+  border: 4px solid rgb(218, 218, 218);
+  width: 60vw
+}
+
+td{
+  padding:10px;
+}
+
+.f20{
+  font-size:20px;
+}
+
+.f40{
+  font-size:40px;
+}
+
+.bold{
+  font-weight:bold;
+}
+
+.btn-primary1{
+  color:white;
+  background-color:rgb(65, 65, 250);
+  width: 50px;
+}
+
+.btn-primary2{
+  color:white;
+  font-size:10px;
+  background-color:rgb(65, 65, 250);
+  width: 130px;
+}
+
+@media screen and (min-width:0px) and ( max-width:800px) {
+  .f20-30{
+    font-size:20px;
+  }
+  .f30{
+    font-size:30px;
+  }
+
+  .none-xs{
+    display: none;
+  }
+}
+
+@media screen and (min-width:801px){
+  .f20-30{
+    font-size:40px;
+  }
+
+  .none-md{
+    display: none;
+  }
+}
+
+
+.justify {
+  display: flex;
+  justify-content: space-between;
+  padding:10px;
+}
+
+.pointer{
+  cursor: pointer
+}
+
+.blue{
+  color:rgb(85, 85, 255);
+}
