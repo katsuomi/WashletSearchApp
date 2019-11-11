@@ -5,10 +5,6 @@ services:
     image: postgres
     ports:
       - '5432:5432' # ホストからゲストへポートフォワード
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: test_db
     volumes:
       - postgresql-data:/var/lib/postgresql/data
   web:
