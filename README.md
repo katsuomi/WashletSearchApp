@@ -1,5 +1,9 @@
 # WashletSearchApp
 
+## 💻 demo
+
+![washletSearch](https://user-images.githubusercontent.com/36298285/68560233-937ea980-0483-11ea-8b51-fe01a5968bf4.gif)
+
 ## 💬 About
 
 全国のWahlet付きトイレの登録・検索・案内ができるアプリ WashletSearchApp
