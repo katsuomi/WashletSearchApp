@@ -1,6 +1,8 @@
 class Map < ApplicationRecord
   # after_validation :geocode,if: :paid_with_card?
-  validates :address, length: { minimum: 1 } ,on: [:create]
+  validates :address, presence: true
+  validates :latitude, presence: true
+  validates :longitude, presence: true
 
   private
   def geocode
