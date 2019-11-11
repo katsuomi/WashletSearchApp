@@ -62,3 +62,14 @@ $ docker-compose ps
 |:-:|:-:|
 |web|[http://localhost:3000](http://localhost:3000)|
 |db|tcp:5432|
+
+## ⚠️ note
+**envファイルに環境変数の設定が必要です。**
+
+.envファイルを作成後、以下のように値を入れてください。
+```
+  (.env)
+  GOOGLE_MAPS_API_KEY = "*********************************"
+```
+
+
