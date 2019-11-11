@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   root "maps#index"
   resources :maps
-  resources :places
   get 'bye', to: 'maps#bye', as: :bye
   get '/admin', to: 'maps#admin', as: :admin
   get '/dev', to: 'maps#dev', as: :dev
