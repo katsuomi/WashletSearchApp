@@ -1,24 +1,64 @@
-# README
+# WashletSearchApp
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 💻 demo
 
-Things you may want to cover:
+![washletSearch](https://user-images.githubusercontent.com/36298285/68560233-937ea980-0483-11ea-8b51-fe01a5968bf4.gif)
 
-* Ruby version
+## 💬 About
 
-* System dependencies
+全国のWahlet付きトイレの登録・検索・案内ができるアプリ WashletSearchApp
 
-* Configuration
+rubyのWebフレームワークRuby on Railsを利用。
 
-* Database creation
+## 🌻 Version
 
-* Database initialization
+||Name|Version|What|
+|:-:|:-:|:-:|:-|
+|backend|ruby|2.6.3|高級言語|
+||Ruby on Rails|5.1.7|Webフレームワーク|
+|DB|Postgresql|11.5|データベース|
 
-* How to run the test suite
+## 🔰 Install & Setup
 
-* Services (job queues, cache servers, search engines, etc.)
+#### 1. Dockerのダウンロード
 
-* Deployment instructions
+下記より、`Docker For Mac` か `Docker For Windows`をインストールして下さい。  
+[https://docs.docker.com/install/](https://docs.docker.com/install/)
 
-* ...
+#### 2. ソースコードの取得
+
+```bash
+$ git clone https://github.com/katsuomi/WashletSearchApp.git
+$ cd WashletSearchApp
+```
+
+#### 3. 起動
+
+下記の手順で、コンテナを起動させて下さい。
+
+```bash
+# Dockerイメージの作成
+$ docker-compose build
+
+# Dockerコンテナの起動
+$ docker-compose up -d
+
+# dbの作成
+$ docker-compose exec web rails db:create
+
+# migrationの実行
+$ docker-compose exec web rails db:migrate
+
+# テストの実行
+$ docker-compose exec web rspec
+
+# 確認
+$ docker-compose ps
+```
+
+下記のコンテナが起動していれば、OKです。
+
+|host||
+|:-:|:-:|
+|web|[http://localhost:3000](http://localhost:3000)|
+|db|tcp:5432|
