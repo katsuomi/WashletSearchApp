@@ -35,6 +35,9 @@ gem 'geocoder'
 gem 'http'
 
 gem 'gon'
+gem "rspec-rails"
+gem 'factory_bot_rails'
+gem 'rails-controller-testing'
 
 
 # Use Redis adapter to run Action Cable in production
