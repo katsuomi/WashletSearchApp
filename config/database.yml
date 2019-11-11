@@ -1,19 +1,15 @@
-
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: db
+  username: postgres
+  password:
+  pool: 5
 
 development:
   <<: *default
-  database: googlemap_development
+  database: WashletSearchApp_development
 
 test:
   <<: *default
-  database: googlemap_test
-
-production:
-  <<: *default
-  database: googlemap_production
-  username: googlemap
-  password: <%= ENV['googlemap_DATABASE_PASSWORD'] %>
+  database: WashletSearchApp_test
