@@ -1,5 +1,7 @@
 # WashletSearchApp
 
+**累計登録ウォシュレット数 3000件を超えました！**
+
 ## 💻 demo
 
 ![washletSearch](https://user-images.githubusercontent.com/36298285/68560233-937ea980-0483-11ea-8b51-fe01a5968bf4.gif)
