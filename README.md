@@ -1,6 +1,6 @@
 # [WashletSearchApp](https://washlet-search.herokuapp.com/)
 
-**累計登録ウォシュレット数 3000件を超えました！**  ⚠︎2019/4時点
+**Total Washlet Count: 3452 over**  ⚠︎2019/4
 
 ## 💻 demo
 
@@ -8,57 +8,57 @@
 
 ## 💬 About
 
-全国のWahlet付きトイレの登録・検索・案内ができるアプリ WashletSearchApp
+An application that allows you to register, search, and guide toilets with Wahlets nationwide.
 
-rubyのWebフレームワークRuby on Railsを利用。
 
 ## 🌻 Version
 
 ||Name|Version|What|
 |:-:|:-:|:-:|:-|
-|backend|ruby|2.6.3|高級言語|
-||Ruby on Rails|5.1.7|Webフレームワーク|
-|DB|Postgresql|11.5|データベース|
+|backend|ruby|2.6.3|High-level languages|
+||Ruby on Rails|5.1.7|Web FrameWork|
+|DB|Postgresql|11.5|Database|
 
 ## 🔰 Install & Setup
 
-#### 1. Dockerのダウンロード
+#### 1. Download Docker
 
-下記より、`Docker For Mac` か `Docker For Windows`をインストールして下さい。  
+The following procedure, please install Docker For Mac or Docker For Windows
+
 [https://docs.docker.com/install/](https://docs.docker.com/install/)
 
-#### 2. ソースコードの取得
+#### 2. Getting source code
 
 ```bash
 $ git clone https://github.com/katsuomi/WashletSearchApp.git
 $ cd WashletSearchApp
 ```
 
-#### 3. 起動
+#### 3. Start-up
 
-下記の手順で、コンテナを起動させて下さい。
+The following procedure, start the container.
 
 ```bash
-# Dockerイメージの作成
+# Create Docker image
 $ docker-compose build
 
-# Dockerコンテナの起動
-$ docker-compose up -d
+# Start Docker container
+$ docker-compose up
 
-# dbの作成
+# Create DB
 $ docker-compose exec web rails db:create
 
-# migrationの実行
+# migration
 $ docker-compose exec web rails db:migrate
 
-# テストの実行
+# test
 $ docker-compose exec web rspec
 
-# 確認
+# confirm
 $ docker-compose ps
 ```
 
-下記のコンテナが起動していれば、OKです。
+If the following local server started, it's ok.
 
 |host||
 |:-:|:-:|
@@ -66,9 +66,9 @@ $ docker-compose ps
 |db|tcp:5432|
 
 ## ⚠️ note
-**envファイルに環境変数の設定が必要です。**
+**Environment variable setting is required.**
 
-.envファイルを作成後、以下のように値を入れてください。
+Please describe the following settings after creating .env file.
 ```
   (.env)
   GOOGLE_MAPS_API_KEY=*********************************
