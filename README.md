@@ -73,4 +73,3 @@ Please describe the following settings after creating .env file.
   (.env)
   GOOGLE_MAPS_API_KEY=*********************************
 ```
-
